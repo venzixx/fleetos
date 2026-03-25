@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'role',
         'status',
+        'traccar_device_id',
         'latitude',
         'longitude',
         'location_accuracy',
@@ -50,6 +51,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'traccar_device_id' => 'integer',
             'location_updated_at' => 'datetime',
         ];
     }

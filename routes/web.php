@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\FleetController;
 use App\Http\Controllers\ProfileController;
+use App\Services\TraccarService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -31,9 +34,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Maps page
     Route::get('/maps', function () {
         return view('maps');
     })->name('maps');
+
+    // Fleet / Traccar API endpoints used by the live map
+    Route::get('/api/fleet/positions', [FleetController::class, 'positions'])->name('fleet.positions');
+    Route::get('/api/fleet/status', [FleetController::class, 'status'])->name('fleet.status');
 
     // Driver status
     Route::post('/update-status', function (Request $request) {
@@ -99,8 +108,11 @@ Route::middleware('auth')->group(function () {
         }
 
         $users = \App\Models\User::all();
+        $traccarDevices = collect(app(TraccarService::class)->getDevices())
+            ->sortBy(fn (array $device) => strtolower($device['name'] ?? ''))
+            ->values();
 
-        return view('admin', compact('users'));
+        return view('admin', compact('users', 'traccarDevices'));
     });
 
     // Update role
@@ -120,6 +132,34 @@ Route::middleware('auth')->group(function () {
 
         return back();
     });
+
+    // Update Traccar device mapping
+    Route::post('/users/{id}/traccar-device', function (Request $request, $id) {
+        $currentUser = Auth::user();
+        if ($currentUser->role !== 'admin') {
+            abort(403);
+        }
+
+        $user = \App\Models\User::findOrFail($id);
+
+        $validated = $request->validate([
+            'traccar_device_id' => [
+                'nullable',
+                'integer',
+                'min:1',
+                Rule::unique('users', 'traccar_device_id')->ignore($user->id),
+            ],
+        ], [
+            'traccar_device_id.unique' => 'That Traccar device is already assigned to another user.',
+        ]);
+
+        $user->traccar_device_id = $validated['traccar_device_id'] ?? null;
+        $user->save();
+
+        return back()->with('status', $user->traccar_device_id
+            ? "Traccar device linked for {$user->name}."
+            : "Traccar device cleared for {$user->name}.");
+    })->name('users.traccar-device.update');
 
     // Push subscription
     Route::post('/push/subscribe', function (Request $request) {

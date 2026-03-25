@@ -24,7 +24,7 @@
     }
 
     .admin-shell {
-        max-width: 1100px;
+        max-width: 1160px;
         margin: 0 auto;
         display: grid;
         gap: 20px;
@@ -45,11 +45,15 @@
         color: var(--app-text);
     }
 
-    .page-title span { color: var(--app-accent); }
+    .page-title span {
+        color: var(--app-accent);
+    }
 
     .live-badge,
     .panel-kicker,
-    .th {
+    .th,
+    .device-helper,
+    .banner-copy {
         font-family: 'IBM Plex Mono', monospace;
         font-size: 0.68rem;
         letter-spacing: 0.12em;
@@ -81,12 +85,8 @@
         50% { opacity: 0.72; box-shadow: 0 0 0 6px transparent; }
     }
 
-    .stats-row {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 14px;
-    }
-
+    .flash-banner,
+    .info-banner,
     .stat-card,
     .ops-panel,
     .table-card {
@@ -94,7 +94,46 @@
         border-radius: 20px;
         background: var(--app-surface);
         box-shadow: var(--app-shadow);
-        overflow: hidden;
+    }
+
+    .flash-banner,
+    .info-banner {
+        padding: 14px 18px;
+    }
+
+    .flash-banner {
+        color: color-mix(in srgb, var(--app-accent) 70%, var(--app-text) 30%);
+        background: var(--app-accent-soft);
+        border-color: var(--app-accent-border);
+        font-weight: 700;
+    }
+
+    .flash-banner.error {
+        color: var(--app-danger-text);
+        background: var(--app-danger-soft);
+        border-color: color-mix(in srgb, var(--app-danger-text) 20%, var(--app-border));
+    }
+
+    .info-banner {
+        display: grid;
+        gap: 6px;
+    }
+
+    .banner-title {
+        font-size: 0.96rem;
+        font-weight: 700;
+        color: var(--app-text);
+    }
+
+    .banner-copy {
+        color: var(--app-text-muted);
+        line-height: 1.7;
+    }
+
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
     }
 
     .stat-card {
@@ -123,7 +162,8 @@
 
     .ops-panel {
         display: grid;
-        grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+        grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+        overflow: hidden;
     }
 
     .ops-copy,
@@ -187,6 +227,10 @@
         font-size: 1.04rem;
         font-weight: 700;
         color: var(--app-text);
+    }
+
+    .table-card {
+        overflow: hidden;
     }
 
     .table-card-header {
@@ -283,7 +327,8 @@
         color: var(--app-text-muted);
     }
 
-    .status-badge {
+    .status-badge,
+    .device-badge {
         display: inline-flex;
         align-items: center;
         gap: 6px;
@@ -306,11 +351,78 @@
         color: var(--app-text-muted);
     }
 
+    .device-badge {
+        background: color-mix(in srgb, var(--app-surface-strong) 92%, transparent);
+        border: 1px solid var(--app-border);
+        color: var(--app-text-soft);
+    }
+
     .status-dot {
         width: 6px;
         height: 6px;
         border-radius: 50%;
         background: currentColor;
+    }
+
+    .device-form {
+        display: grid;
+        gap: 7px;
+        min-width: 230px;
+    }
+
+    .device-field-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .device-input,
+    .role-select {
+        min-height: 36px;
+        border-radius: 10px;
+        border: 1px solid var(--app-border);
+        background: var(--app-surface-strong);
+        color: var(--app-text);
+        font-family: 'Inter', sans-serif;
+        outline: none;
+    }
+
+    .device-input {
+        width: 100%;
+        padding: 0 12px;
+        font-size: 0.82rem;
+    }
+
+    .device-input::placeholder {
+        color: var(--app-text-muted);
+    }
+
+    .device-save-btn {
+        min-height: 36px;
+        padding: 0 12px;
+        border-radius: 10px;
+        border: 1px solid var(--app-accent-border);
+        background: var(--app-accent-soft);
+        color: color-mix(in srgb, var(--app-accent) 70%, var(--app-text) 30%);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 700;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .device-helper {
+        color: var(--app-text-muted);
+        line-height: 1.5;
+    }
+
+    .device-name {
+        color: var(--app-text);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: normal;
+        text-transform: none;
     }
 
     .role-form { display: inline-block; }
@@ -340,28 +452,23 @@
     .role-select {
         appearance: none;
         -webkit-appearance: none;
-        min-height: 34px;
         padding: 5px 30px 5px 10px;
-        border-radius: 10px;
-        font-family: 'Inter', sans-serif;
         font-size: 0.72rem;
         font-weight: 700;
         letter-spacing: 0.04em;
         text-transform: uppercase;
         cursor: pointer;
-        outline: none;
-        background: var(--app-surface-strong);
     }
 
     .role-select.admin-select {
         color: #f59e0b;
-        border: 1px solid rgba(245, 158, 11, 0.2);
+        border-color: rgba(245, 158, 11, 0.2);
         background: rgba(245, 158, 11, 0.1);
     }
 
     .role-select.driver-select {
         color: color-mix(in srgb, var(--app-accent) 80%, var(--app-text) 20%);
-        border: 1px solid var(--app-accent-border);
+        border-color: var(--app-accent-border);
         background: var(--app-accent-soft);
     }
 
@@ -384,7 +491,7 @@
         padding: 14px 16px;
         border-bottom: 1px solid var(--app-border);
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 12px;
     }
 
@@ -410,14 +517,23 @@
     }
 
     .uc-badges {
-        margin-top: 7px;
+        margin-top: 8px;
         display: flex;
         align-items: center;
         gap: 8px;
+        flex-wrap: wrap;
     }
 
     .uc-actions {
-        flex-shrink: 0;
+        width: min(280px, 100%);
+        display: grid;
+        gap: 10px;
+    }
+
+    @media (max-width: 980px) {
+        .stats-row {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
     }
 
     @media (max-width: 860px) {
@@ -431,6 +547,24 @@
         }
     }
 
+    @media (max-width: 760px) {
+        .table-view {
+            display: none;
+        }
+
+        .card-list {
+            display: block;
+        }
+
+        .user-card {
+            flex-wrap: wrap;
+        }
+
+        .uc-actions {
+            width: 100%;
+        }
+    }
+
     @media (max-width: 640px) {
         .admin-wrap {
             padding: 16px 12px 60px;
@@ -440,12 +574,9 @@
             grid-template-columns: 1fr 1fr;
         }
 
-        .table-view {
-            display: none;
-        }
-
-        .card-list {
-            display: block;
+        .device-field-row {
+            flex-direction: column;
+            align-items: stretch;
         }
     }
 
@@ -458,11 +589,15 @@
 
 @php
     $currentUser = auth()->user();
-    $users = \App\Models\User::all();
+    $users = $users ?? \App\Models\User::all();
+    $traccarDevices = collect($traccarDevices ?? []);
+    $traccarDeviceMap = $traccarDevices->keyBy(fn (array $device) => (int) ($device['id'] ?? 0));
     $online = $users->where('status', 'online')->count();
     $offline = $users->where('status', 'offline')->count();
     $drivers = $users->where('role', 'driver')->count();
     $admins = $users->where('role', 'admin')->count();
+    $mappedDrivers = $users->where('role', 'driver')->whereNotNull('traccar_device_id')->count();
+    $unmappedDrivers = max($drivers - $mappedDrivers, 0);
 @endphp
 
 <div class="admin-wrap">
@@ -470,6 +605,25 @@
         <div class="page-header">
             <div class="page-title">Admin <span>Dashboard</span></div>
             <div class="live-badge"><span class="live-dot"></span> Team overview</div>
+        </div>
+
+        @if (session('status'))
+            <div class="flash-banner">{{ session('status') }}</div>
+        @endif
+
+        @if ($errors->has('traccar_device_id'))
+            <div class="flash-banner error">{{ $errors->first('traccar_device_id') }}</div>
+        @endif
+
+        <div class="info-banner">
+            <div class="banner-title">Traccar device mapping</div>
+            <div class="banner-copy">
+                @if ($traccarDevices->isNotEmpty())
+                    {{ $traccarDevices->count() }} Traccar device suggestions are loaded. Enter a device ID manually or use one from the Traccar list, then save it to link that user to live map data.
+                @else
+                    No Traccar device suggestions are loaded right now. You can still enter a numeric device ID manually and save it.
+                @endif
+            </div>
         </div>
 
         <div class="stats-row">
@@ -482,38 +636,42 @@
                 <div class="stat-value green">{{ $online }}</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Offline</div>
-                <div class="stat-value red">{{ $offline }}</div>
+                <div class="stat-label">Linked Drivers</div>
+                <div class="stat-value">{{ $mappedDrivers }}</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Admins</div>
-                <div class="stat-value">{{ $admins }}</div>
+                <div class="stat-label">Traccar Devices</div>
+                <div class="stat-value">{{ $traccarDevices->count() }}</div>
             </div>
         </div>
 
         <section class="ops-panel">
             <div class="ops-copy">
                 <div class="panel-kicker">Operations</div>
-                <h2 class="panel-title">User management stays here. Live map lives on the dashboard.</h2>
+                <h2 class="panel-title">Manage users here and link drivers to their Traccar devices.</h2>
                 <p class="panel-copy">
-                    The admin area is now focused on roles, status monitoring, and account oversight. Driver map tracking has been moved out of this page so the management view stays cleaner and easier to maintain.
+                    Once a driver has a saved <code>traccar_device_id</code>, the live fleet map can match the Traccar GPS feed back to that account. Keep one Traccar device linked to one user so the map stays accurate.
                 </p>
-                <a href="{{ route('dashboard') }}#driverMapPanel" class="panel-link">Open Driver Map</a>
+                <a href="{{ route('maps') }}" class="panel-link">Open Live Fleet Map</a>
             </div>
 
             <div class="ops-meta">
                 <div class="ops-meta-grid">
                     <div class="meta-card">
                         <div class="panel-kicker">Drivers</div>
-                        <div class="meta-card-value">{{ $drivers }} active accounts</div>
+                        <div class="meta-card-value">{{ $drivers }} driver accounts</div>
                     </div>
                     <div class="meta-card">
-                        <div class="panel-kicker">Online Drivers</div>
-                        <div class="meta-card-value">{{ $users->where('role', 'driver')->where('status', 'online')->count() }} currently tracking</div>
+                        <div class="panel-kicker">Unlinked Drivers</div>
+                        <div class="meta-card-value">{{ $unmappedDrivers }} still need a device</div>
                     </div>
                     <div class="meta-card">
-                        <div class="panel-kicker">You</div>
-                        <div class="meta-card-value">{{ $currentUser->name }}</div>
+                        <div class="panel-kicker">Offline Users</div>
+                        <div class="meta-card-value">{{ $offline }} currently offline</div>
+                    </div>
+                    <div class="meta-card">
+                        <div class="panel-kicker">Admins</div>
+                        <div class="meta-card-value">{{ $admins }} admin account{{ $admins !== 1 ? 's' : '' }}</div>
                     </div>
                 </div>
             </div>
@@ -523,7 +681,7 @@
             <div class="table-card-header">
                 <div>
                     <div class="table-card-title">All Users</div>
-                    <div class="table-card-sub">Manage roles and monitor driver status</div>
+                    <div class="table-card-sub">Manage roles, monitor status, and assign Traccar device IDs</div>
                 </div>
             </div>
 
@@ -534,11 +692,18 @@
                             <th>User</th>
                             <th>Email</th>
                             <th>Status</th>
+                            <th>Traccar Device</th>
                             <th>Role</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $user)
+                        @foreach ($users as $user)
+                            @php
+                                $linkedDevice = $user->traccar_device_id ? $traccarDeviceMap->get((int) $user->traccar_device_id) : null;
+                                $inputValue = old('mapping_user_id') == $user->id
+                                    ? old('traccar_device_id')
+                                    : ($user->traccar_device_id ?? '');
+                            @endphp
                             <tr>
                                 <td>
                                     <div class="user-cell">
@@ -554,7 +719,37 @@
                                     </span>
                                 </td>
                                 <td>
-                                    @if(auth()->id() !== $user->id)
+                                    <form method="POST" action="{{ route('users.traccar-device.update', $user->id) }}" class="device-form">
+                                        @csrf
+                                        <input type="hidden" name="mapping_user_id" value="{{ $user->id }}">
+                                        <div class="device-field-row">
+                                            <input
+                                                type="text"
+                                                name="traccar_device_id"
+                                                inputmode="numeric"
+                                                pattern="[0-9]*"
+                                                class="device-input"
+                                                value="{{ $inputValue }}"
+                                                placeholder="Enter device ID"
+                                                {{ $traccarDevices->isNotEmpty() ? 'list=traccarDeviceOptions' : '' }}
+                                            >
+                                            <button type="submit" class="device-save-btn">Save</button>
+                                        </div>
+                                        <div class="device-helper">
+                                            @if ($linkedDevice)
+                                                Linked to <span class="device-name">{{ $linkedDevice['name'] ?? 'Unnamed device' }}</span> (#{{ $user->traccar_device_id }})
+                                            @elseif ($user->traccar_device_id)
+                                                Saved as #{{ $user->traccar_device_id }}. Device is not in the current Traccar suggestions.
+                                            @elseif ($traccarDevices->isNotEmpty())
+                                                Not linked yet.
+                                            @else
+                                                Enter a numeric Traccar device ID manually.
+                                            @endif
+                                        </div>
+                                    </form>
+                                </td>
+                                <td>
+                                    @if (auth()->id() !== $user->id)
                                         <form method="POST" action="/update-role/{{ $user->id }}" class="role-form">
                                             @csrf
                                             <div class="role-select-wrap {{ $user->role === 'admin' ? 'admin-wrap' : 'driver-wrap' }}">
@@ -575,7 +770,13 @@
             </div>
 
             <div class="card-list">
-                @foreach($users as $user)
+                @foreach ($users as $user)
+                    @php
+                        $linkedDevice = $user->traccar_device_id ? $traccarDeviceMap->get((int) $user->traccar_device_id) : null;
+                        $inputValue = old('mapping_user_id') == $user->id
+                            ? old('traccar_device_id')
+                            : ($user->traccar_device_id ?? '');
+                    @endphp
                     <div class="user-card">
                         <div class="uc-avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
                         <div class="uc-info">
@@ -586,10 +787,44 @@
                                     <span class="status-dot"></span>
                                     {{ $user->status === 'online' ? 'Online' : 'Offline' }}
                                 </span>
+                                @if ($user->traccar_device_id)
+                                    <span class="device-badge">
+                                        Device #{{ $user->traccar_device_id }}
+                                    </span>
+                                @endif
                             </div>
                         </div>
                         <div class="uc-actions">
-                            @if(auth()->id() !== $user->id)
+                            <form method="POST" action="{{ route('users.traccar-device.update', $user->id) }}" class="device-form">
+                                @csrf
+                                <input type="hidden" name="mapping_user_id" value="{{ $user->id }}">
+                                <div class="device-field-row">
+                                    <input
+                                        type="text"
+                                        name="traccar_device_id"
+                                        inputmode="numeric"
+                                        pattern="[0-9]*"
+                                        class="device-input"
+                                        value="{{ $inputValue }}"
+                                        placeholder="Enter device ID"
+                                        {{ $traccarDevices->isNotEmpty() ? 'list=traccarDeviceOptions' : '' }}
+                                    >
+                                    <button type="submit" class="device-save-btn">Save</button>
+                                </div>
+                                <div class="device-helper">
+                                    @if ($linkedDevice)
+                                        Linked to <span class="device-name">{{ $linkedDevice['name'] ?? 'Unnamed device' }}</span> (#{{ $user->traccar_device_id }})
+                                    @elseif ($user->traccar_device_id)
+                                        Saved as #{{ $user->traccar_device_id }}. Device is not in the current Traccar suggestions.
+                                    @elseif ($traccarDevices->isNotEmpty())
+                                        Not linked yet.
+                                    @else
+                                        Enter a numeric Traccar device ID manually.
+                                    @endif
+                                </div>
+                            </form>
+
+                            @if (auth()->id() !== $user->id)
                                 <form method="POST" action="/update-role/{{ $user->id }}" class="role-form">
                                     @csrf
                                     <div class="role-select-wrap {{ $user->role === 'admin' ? 'admin-wrap' : 'driver-wrap' }}">
@@ -609,5 +844,19 @@
         </div>
     </div>
 </div>
+
+@if ($traccarDevices->isNotEmpty())
+    <datalist id="traccarDeviceOptions">
+        @foreach ($traccarDevices as $device)
+            @php
+                $deviceId = $device['id'] ?? null;
+                $deviceName = $device['name'] ?? 'Unnamed device';
+            @endphp
+            @if ($deviceId !== null)
+                <option value="{{ $deviceId }}">{{ $deviceName }}</option>
+            @endif
+        @endforeach
+    </datalist>
+@endif
 
 </x-app-layout>
